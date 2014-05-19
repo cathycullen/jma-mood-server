@@ -2,21 +2,12 @@ require 'sinatra'
 require 'dotenv'
 require 'json'
 
-before do
-  if request.request_method == 'OPTIONS'
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+before '*' do
+  response.headers["Access-Control-Allow-Origin"] = "*"
+  response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT"
+  response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+end
 
-    halt 200
-  end
-end
-options '/*' do
-  response["Access-Control-Allow-Headers"] = "origin, x-requested-with, content-type"
-end
-  
-  
-  
 get '/hello_server' do 
   puts "Hello server"
 end
