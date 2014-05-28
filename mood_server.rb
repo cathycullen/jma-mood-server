@@ -19,11 +19,6 @@ before '*' do
   response.headers["Access-Control-Allow-Headers"] = "Content-Type"
 end
 
-get '/hello-mood-server' do 
-  puts "Hello Mood Server"
-  "Hello Mood Server"
-end
-
 get '/mood-states' do 
   puts "/moods"
   @@mood_states.to_json
@@ -33,15 +28,6 @@ get '/submit-mood' do
   puts "Hello submit mood"
     if params[:mood]
       puts "params:  #{params[:mood]}"
-      puts "params:  #{params['mood']}"
     end
-end
-
-get '/testing-get' do 
-  "hello from testing-get"
-end
-
-post '/testing-post' do 
-  "hello from testing-post"
 end
 
