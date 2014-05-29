@@ -27,7 +27,10 @@ end
 get '/submit-mood' do 
   puts "Hello submit mood"
     if params[:mood]
-      puts "params:  #{params[:mood]}"
+      puts "Mood:  #{params[:mood]}"
+    end
+    if params[:origin]
+      puts "Origin:  #{params[:origin]}"
     end
 end
 
