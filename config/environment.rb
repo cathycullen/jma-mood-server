@@ -17,6 +17,7 @@ require 'logger'
 
 require 'sinatra'
 require "sinatra/reloader" if development?
+require 'sinatra/cookies'
 require 'bcrypt'
 
 require 'erb'
@@ -33,6 +34,7 @@ configure do
   # See: http://www.sinatrarb.com/faq.html#sessions
   enable :sessions
   set :session_secret, ENV['SESSION_SECRET'] || 'this is a secret shhhhh'
+  set :session_secret, "My session secret"
 
   # Set the views to
   set :views, File.join(Sinatra::Application.root, "app", "views")
@@ -44,3 +46,9 @@ Dir[APP_ROOT.join('app', 'helpers', '*.rb')].each { |file| require file }
 
 # Set up the database and models
 require APP_ROOT.join('config', 'database')
+
+before '*' do
+  response.headers["Access-Control-Allow-Origin"] = "*"
+  response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT"
+  response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+end

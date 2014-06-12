@@ -20,6 +20,8 @@ before '*' do
 end
 
 get '/mood-states' do 
+  puts "response: #{response}"
+  puts "response.headers: #{response.headers}"
   puts "/moods"
   @@mood_states.to_json
 end
