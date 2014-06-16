@@ -12,7 +12,8 @@ end
 
 get "/results" do
   puts "/results session[:foo] #{  session[:foo] }"
-  erb :results
+  #erb :results
+  session[:foo]
 end
 
 get '/mood-states' do
