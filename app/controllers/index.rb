@@ -11,6 +11,7 @@ get "/ajax-setter" do
 end
 
 get "/results" do
+  puts "/results session[:foo] #{  session[:foo] }"
   erb :results
 end
 
