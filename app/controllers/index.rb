@@ -10,7 +10,7 @@ get "/ajax-setter" do
   puts "response.headers: #{response.headers}"
   session[:foo] = "bar"
   puts "/ajax-setter session[:foo] #{  session[:foo] }"
-  session[:foo] = "bar"
+  session[:foo]
 end
 
 get "/results" do
