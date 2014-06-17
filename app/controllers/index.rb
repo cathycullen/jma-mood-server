@@ -8,6 +8,8 @@ end
 
 get "/ajax-setter" do
   session[:foo] = "bar"
+  puts "/ajax-setter session[:foo] #{  session[:foo] }"
+  session[:foo] = "bar"
 end
 
 get "/results" do
