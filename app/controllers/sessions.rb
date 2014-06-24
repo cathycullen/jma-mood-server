@@ -38,32 +38,28 @@ get "/get-session" do
   session[:user_id]
 end
 
+get '/submit_test' do 
+end
+
 get '/submit-login' do 
+  puts "/submit-login session.inspect: #{session.inspect}"
   puts "/submit-login params #{params}"
   retval = ""
     if params[:email]
       @user = User.find_by(email: params[:email])
-      puts "@user: #{@user}"
+      puts "/submit-login @user: #{@user}"
       if @user 
         if @user.authenticate(params[:password])
           session[:user_id] = @user.id
-          response.set_cookie("user_id", @user.id)
-          cookies[:user_id] = @user.id
-          puts "User was authenticated"
-          puts "session[:user_id]: #{session[:user_id]}" 
-          puts "/submit-login cookies: #{cookies[:user_id]}"
-          #redirect "/profile"
+          puts "/submit-login User was authenticated"
+          puts "/submit-login session[:user_id]: #{session[:user_id]}" 
           retval = @user.to_json
-        else
-          retval = @error = "Invalid username or password"
-          #erb :login
+        
         end
-      else
-        retval = @error = "No User Exists"
-        #erb :login
       end
     end
-    puts "/submitLogin returning: #{retval}  session id #{session[:user_id]}"
+    puts "/submit-login session.inspect: #{session.inspect}"
+    puts "/submit-login returning: #{retval}  session[:user_id] #{session[:user_id]}" 
     retval
 end
 
