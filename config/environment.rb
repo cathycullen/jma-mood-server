@@ -48,7 +48,8 @@ Dir[APP_ROOT.join('app', 'helpers', '*.rb')].each { |file| require file }
 require APP_ROOT.join('config', 'database')
 
 before '*' do
-  response.headers["Access-Control-Allow-Origin"] = "*"
+  response.headers["Access-Control-Allow-Origin"] = "http://localhost:8000"
   response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT"
   response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+  response.headers['Access-Control-Allow-Credentials'] = 'true'
 end
