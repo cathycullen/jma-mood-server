@@ -6,7 +6,6 @@ get "/profile" do
 end
 
 get "/currentUser" do
-
 	retval = "{}"
 	
 	puts "/currentUser session.inspect: #{session.inspect}"
@@ -27,7 +26,6 @@ get "/currentUser" do
 end
 
 get "/logged-in" do
-
 	retval = "false"
 	
 	puts "/currentUser session[:user_id]: #{session[:user_id]}"
@@ -36,6 +34,44 @@ get "/logged-in" do
 	  retval = "true"
 	end
 	puts "/logged-in returning: #{retval}"
+	retval
+end
+
+get '/submit-lost-password' do
+  puts "/submit-lost-password session.inspect: #{session.inspect}"
+	retval = ""
+	if params[:email] 
+    	#change to find by user email
+    	user = User.where( :email => params[:email])
+    	#send a formatted email to the users email address with their password
+    else
+    	retval = "Email Address not found.   Cannot send lost password"
+    end
+
+end
+
+get '/change-user-password' do
+
+end
+
+
+get '/submit-new-user' do
+  puts "/submit-neww-user session.inspect: #{session.inspect}"
+retval = ""
+#make sure user doesn't already exist
+
+	if params[:name] && params[:email]  && params[:password]  && params[:coach]
+			@coach = Coach.where(:name => params[:coach]).first
+			if(@coach)
+				puts "coach #{@coach} : #{@coach.name}"
+				@user = User.create(name: params[:name], email: params[:email], role:  "client", password: params[:password], coach_id: @coach.id)
+				retval = @user
+			else
+				retval = "unable to find coach #{params[:coach]} for user"
+			end
+		else
+			"Missing parameters.  User #{params[:name]} not added"
+	end
 	retval
 end
 
