@@ -39,15 +39,21 @@ end
 
 get '/submit-lost-password' do
   puts "/submit-lost-password session.inspect: #{session.inspect}"
-	retval = ""
-	if params[:email] 
-    	#change to find by user email
-    	user = User.where( :email => params[:email])
-    	#send a formatted email to the users email address with their password
-    else
-    	retval = "Email Address not found.   Cannot send lost password"
-    end
+	if session[:user_id]
 
+	  @user = User.find(session[:user_id])
+		if @user 
+			puts "/currentUser @user: @user: #{@user} @user.to_json: #{@user.to_json}"
+
+    		email = Mailer.send_password(@user)
+    		email.deliver
+			retval = @user.to_json
+		else "{}"
+		end
+	else "{}"
+	end
+	puts "/currentUser returning: #{retval}"
+	retval
 end
 
 get '/change-user-password' do
@@ -65,7 +71,10 @@ retval = ""
 			if(@coach)
 				puts "coach #{@coach} : #{@coach.name}"
 				@user = User.create(name: params[:name], email: params[:email], role:  "client", password: params[:password], coach_id: @coach.id)
-				retval = @user
+
+    		email = Mailer.send_welcome_email(@user)
+    		email.deliver
+				retval = @user.to_json
 			else
 				retval = "unable to find coach #{params[:coach]} for user"
 			end

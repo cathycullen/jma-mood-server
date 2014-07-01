@@ -15,6 +15,9 @@ require 'pg'
 require 'active_record'
 require 'logger'
 
+require 'dotenv'
+require 'action_mailer'
+
 require 'sinatra'
 require "sinatra/reloader" if development?
 require 'sinatra/cookies'
@@ -26,6 +29,8 @@ require 'erb'
 APP_ROOT = Pathname.new(File.expand_path('../../', __FILE__))
 
 APP_NAME = APP_ROOT.basename.to_s
+
+Dotenv.load
 
 configure do
   # By default, Sinatra assumes that the root is the file that calls the configure block.
