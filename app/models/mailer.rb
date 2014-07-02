@@ -6,7 +6,7 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
 
   class Mailer < ActionMailer::Base
 
-    def send_password(user)
+    def send_password_link(user)
       @user = user
     
       ActionMailer::Base.smtp_settings = {

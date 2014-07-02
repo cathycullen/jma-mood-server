@@ -43,9 +43,9 @@ get '/submit-lost-password' do
 
 	  @user = User.find(session[:user_id])
 		if @user 
-			puts "/currentUser @user: @user: #{@user} @user.to_json: #{@user.to_json}"
+			puts "@user: @user: #{@user} @user.to_json: #{@user.to_json}"
 
-    		email = Mailer.send_password(@user)
+    		email = Mailer.send_password_link(@user)
     		email.deliver
 			retval = @user.to_json
 		else "{}"
@@ -56,8 +56,37 @@ get '/submit-lost-password' do
 	retval
 end
 
-get '/change-user-password' do
+get '/password-form' do
+	# called from user email link
+	puts "/password-form called #{params}"
+	if params[:token]
+		@token = params[:token]
+		 erb :password_reset_form
+	else
+		#redirect "/login" bad token
+		puts "/password_form Error:  bad token received"
+	end
+end
 
+post '/password-reset' do
+	puts "/password-reset called #{params}"
+	if params[:token] && params[:password]  && params[:password_check] 
+		if params[:password] == params[:password_check]
+		 	@user = User.find_by(reset_token:  params[:token])
+		 	if(@user)
+		 		@user.password = params[:password]
+		 		@user.save
+		 		"Password has been updated."
+		 	else
+		 		"Password Reset User not found"
+		 	end 
+		else
+			"Password Reset Passwords do not match"
+		end
+	else
+		"Password Reset is Missing Parameters"
+	end
+	
 end
 
 

@@ -6,6 +6,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :password_digest
       t.string :role
       t.integer :coach_id
+      t.string :reset_token
     end
   end
 end
