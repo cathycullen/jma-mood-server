@@ -5,11 +5,11 @@ c = Coach.create(name: "Maura Koutoujian", email: "maura@jodymichael.com", passw
 u1 = User.create(name: "Cathy Cullen", email: "cathy@softwareoptions.com", role:  "admin", password: "123", coach_id: 2)
 u2 = User.create(name: "Baci", email: "baci@baci.com", role: "client", password: "123", coach_id: 1)
 
-
 path=APP_ROOT.join('db/seed_data','moods.txt')
  
+
 File.open(path, "r") do |f|
     f.each_line do |l|
-      puts "mood: #{l}"
+      MoodState.create(state: l.chomp)
     end
   end

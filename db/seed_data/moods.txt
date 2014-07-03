@@ -62,6 +62,7 @@ Relieved
 Remorseful
 Resigned
 Restless
+Sad
 Satisfied
 Scared
 Serious

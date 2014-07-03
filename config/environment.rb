@@ -46,8 +46,6 @@ configure do
 end
 
 
-puts "APP_ROOT: #{APP_ROOT}    APP_NAME: #{APP_NAME} root: #{root}: views: #{views}"
-
 # Set up the controllers and helpers
 Dir[APP_ROOT.join('app', 'controllers', '*.rb')].each { |file| require file }
 Dir[APP_ROOT.join('app', 'helpers', '*.rb')].each { |file| require file }

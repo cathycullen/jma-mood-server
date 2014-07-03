@@ -114,7 +114,7 @@ retval = ""
 end
 
 
-get '/submit-mood' do 
+get '/submit-mood-old' do 
   puts "/submit-mood session.inspect: #{session.inspect}"
   puts "/submit-mood params #{params}"
 
@@ -128,6 +128,9 @@ get '/submit-mood' do
     		mood.user = user
     		mood.save
     		retval = "#{params[:mood]} submitted}"
+    		#if this mood does not exist in mood states then add to mood states for this user.
+    		mood_state = MoodState.where(:state => params[:mood] , :user_id => session[:user_id])
+
     	else
     		retval = "user not found "
     	end
