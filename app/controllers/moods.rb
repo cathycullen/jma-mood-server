@@ -31,3 +31,35 @@ get '/submit-mood' do
 	puts "/submit-mood returning: #{retval}"
 	retval
 end
+
+get '/mood-report-last-week' do
+  if session[:user_id]
+    Mood.where(:user_id => session[:user_id], :created_at => 1.week.ago..Time.now).to_json
+  else
+    ""
+  end
+end
+
+get '/mood-report-last-month' do
+  if session[:user_id]
+    Mood.where(:user_id => session[:user_id], :created_at => 1.month.ago..Time.now).to_json
+  else
+    ""
+  end
+end
+
+get '/send-weekly-mood-report' do
+  puts "/send-weekly-mood-report"
+  if session[:user_id]
+      @user = User.find(session[:user_id])
+      moods = Mood.where(:user_id => session[:user_id], :created_at => 1.week.ago..Time.now)
+
+      email = Mailer.send_weekly_mood_report(@user, @user.coach, moods)
+      email.deliver
+      retval = moods.to_json
+  else
+    ""
+  end
+end
+
+

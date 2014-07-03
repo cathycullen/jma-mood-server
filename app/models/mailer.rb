@@ -53,6 +53,37 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
         format.text
       end
     end
+
+    def send_weekly_mood_report(user, coach, results)
+      @user = user
+      @coach = coach
+      @results = results
+    
+      ActionMailer::Base.smtp_settings = {
+        :address   => ENV['DEV_ADDRESS'],
+        :port      => ENV['DEV_PORT'],
+        :domain    => ENV['DEV_DOMAIN'],
+        :authentication => :"login",
+        :user_name      => ENV['DEV_USER'],
+        :password       => ENV['DEV_PASS'],
+        :enable_starttls_auto => true,
+      }
+      
+      puts "sending weekly mood report to: #{@user.email} and coach: #{coach.name}from: #{ENV['DEV_FROM_ADDRESS']}"
+      @results.each do |entry| 
+        puts "date/time: #{entry.created_at} mood:  #{entry.mood} source: #{entry.internal_external}"
+      end
+
+      recipients = [@user.email, @coach.email]
+      mail( 
+        :to      =>  recipients.join(";"),
+        :from    => ENV['DEV_FROM_ADDRESS'],
+        :subject => "Weekly Moodminder Report For #{@user.name}",
+      ) do |format|
+        format.html
+        format.text
+      end
+    end
     
     def to_jma_support(name, email)
       @name = name
