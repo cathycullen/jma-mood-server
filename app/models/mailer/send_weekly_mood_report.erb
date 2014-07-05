@@ -33,6 +33,8 @@
 					<th>Date/Time</th>
 					<th>Mood</th>
 					<th>Source</th>
+					<th>Thoughts</th>
+					<th>Energy Level</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -44,6 +46,8 @@
 							<td><%= entry.created_at.strftime("%a %m-%d-%y %I:%M %p")  %></td>
 							<td><%= entry.mood%></td>
 							<td><%= entry.internal_external%></td>
+							<td><%= entry.thoughts%></td>
+							<td><%= entry.energy_level%></td>
 						</tr>
 					<% i = i + 1 %>			
 				<% end %>	

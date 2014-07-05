@@ -4,11 +4,11 @@ get '/submit-mood' do
 
   puts "response.headers: #{response.headers}"
   retval = ""
-	if params[:mood]  && params[:origin]
+	if params[:mood]  && params[:origin]  && params[:thoughts] && params[:energy_level]
     if session[:user_id]
     	user = User.find(session[:user_id])
     	if user
-    		mood = Mood.new mood: params[:mood], internal_external: params[:origin]
+    		mood = Mood.new mood: params[:mood], internal_external: params[:origin], thoughts: params[:thoughts], energy_level: params[:energy_level]
     		mood.user = user
     		mood.save
     		retval = "#{params[:mood]} submitted"
