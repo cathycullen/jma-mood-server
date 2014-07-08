@@ -1,4 +1,4 @@
-get '/submit-mood' do 
+get '/submit-mood' do
   puts "/submit-mood session.inspect: #{session.inspect}"
   puts "/submit-mood params #{params}"
 
@@ -13,23 +13,23 @@ get '/submit-mood' do
     		mood.save
     		retval = "#{params[:mood]} submitted"
 
-    		#if this mood does not exist in mood states then add to mood states for this user.
+        #if this mood does not exist in mood states then add to mood states for this user.
         if MoodState.where(:state => params[:mood], :user_id => [nil, session[:user_id]]).count == 0
           MoodState.create(:state => params[:mood], :user_id => session[:user_id])
           puts "Custom mood #{params[:mood]} submitted for user #{session[:user_id]}"
         end
 
-    	else
-    		retval = "user not found "
-    	end
+      else
+        retval = "user not found "
+      end
     else
-    	retval = "session[:user_id] is not defined"
-		end
-	else
-		retval = "missing parameter mood or origin"
-	end
-	puts "/submit-mood returning: #{retval}"
-	retval
+      retval = "session[:user_id] is not defined"
+    end
+  else
+    retval = "missing parameter mood or origin"
+  end
+  puts "/submit-mood returning: #{retval}"
+  retval
 end
 
 get '/mood-report-last-week' do
