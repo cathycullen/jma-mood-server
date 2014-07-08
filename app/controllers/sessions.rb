@@ -11,6 +11,12 @@ post "/all-coaches" do
   @coaches = Coach.all
 end
 
+
+get "/all-coaches" do
+  @coaches = Coach.all
+  @coaches.to_json
+end
+
 post "/login" do
   @user = User.find_by(email: params[:email])
     if @user 
@@ -40,9 +46,6 @@ end
 get "/get-session" do
   puts "get-session session[:user_id] #{session[:user_id]}"
   session[:user_id]
-end
-
-get '/submit_test' do 
 end
 
 get '/submit-login' do 
