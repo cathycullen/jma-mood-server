@@ -6,10 +6,9 @@ u1 = User.create(name: "Cathy Cullen", email: "cathy@softwareoptions.com", role:
 u2 = User.create(name: "Baci", email: "baci@baci.com", role: "client", password: "123", coach_id: 1)
 
 path=APP_ROOT.join('db/seed_data','moods.txt')
- 
 
 File.open(path, "r") do |f|
-    f.each_line do |l|
-      MoodState.create(state: l.chomp)
-    end
+  f.each_line do |l|
+    MoodState.create(state: l.chomp)
   end
+end

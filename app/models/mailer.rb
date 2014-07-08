@@ -8,7 +8,7 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
 
     def send_password_link(user)
       @user = user
-    
+
       ActionMailer::Base.smtp_settings = {
         :address   => ENV['DEV_ADDRESS'],
         :port      => ENV['DEV_PORT'],
@@ -18,9 +18,9 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
         :password       => ENV['DEV_PASS'],
         :enable_starttls_auto => true,
       }
-      
+
       puts "sending password reminder to: #{@user.email} from: #{ENV['DEV_FROM_ADDRESS']}"
-      mail( 
+      mail(
         :to      =>  @user.email,
         :from    => ENV['DEV_FROM_ADDRESS'],
         :subject => "JMA Moodminder Information ",
@@ -32,7 +32,7 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
 
      def send_welcome_email(user)
       @user = user
-    
+
       ActionMailer::Base.smtp_settings = {
         :address   => ENV['DEV_ADDRESS'],
         :port      => ENV['DEV_PORT'],
@@ -42,7 +42,7 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
         :password       => ENV['DEV_PASS'],
         :enable_starttls_auto => true,
       }
-      
+
       puts "sending welcome email to: #{@user.email} from: #{ENV['DEV_FROM_ADDRESS']}"
       mail( 
         :to      =>  @user.email,
@@ -58,7 +58,7 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
       @user = user
       @coach = coach
       @results = results
-    
+
       ActionMailer::Base.smtp_settings = {
         :address   => ENV['DEV_ADDRESS'],
         :port      => ENV['DEV_PORT'],
@@ -68,14 +68,14 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
         :password       => ENV['DEV_PASS'],
         :enable_starttls_auto => true,
       }
-      
+
       puts "sending weekly mood report to: #{@user.email} and coach: #{coach.name}from: #{ENV['DEV_FROM_ADDRESS']}"
-      @results.each do |entry| 
+      @results.each do |entry|
         puts "date/time: #{entry.created_at} mood:  #{entry.mood} source: #{entry.internal_external}"
       end
 
       recipients = [@user.email, @coach.email]
-      mail( 
+      mail(
         :to      =>  recipients.join(";"),
         :from    => ENV['DEV_FROM_ADDRESS'],
         :subject => "Weekly Moodminder Report For #{@user.name}",
@@ -84,11 +84,11 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
         format.text
       end
     end
-    
+
     def to_jma_support(name, email)
       @name = name
       @email = email
-    
+
       ActionMailer::Base.smtp_settings = {
         :address   => ENV['DEV_ADDRESS'],
         :port      => ENV['DEV_PORT'],
@@ -99,7 +99,7 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
         :enable_starttls_auto => true,
       }
       puts "sending confirm to jma support team at this address:  #{ENV['JMA_SUPPORT_EMAIL']} from: #{ENV['JMA_FROM_ADDRESS']}"
-      mail( 
+      mail(
         :to      => ENV['JMA_SUPPORT_EMAIL'],
         :from    => ENV['DEV_FROM_ADDRESS'],
         :subject => "JMA Mood Minder Stuff",
@@ -108,11 +108,11 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
         format.text
       end
     end
-    
+
      def submit_test_email(name, email)
       @name = name
       @email = email
-    
+
       begin
        ActionMailer::Base.smtp_settings = {
         :address   => ENV['JMA_ADDRESS'],
@@ -132,15 +132,14 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
         format.html
         format.text
       end
-      
-       rescue Exception => e
+
+    rescue Exception => e
       puts "rescue caught submit_test_email #{e.message}"
       puts e.backtrace
     end
-    
-    end
-    
-  def get_email (email)   
+  end
+
+  def get_email(email)
     retval = email
     if ENV['RACK_ENV'] == 'development' then
       retval = ENV['DEVELOPER_EMAIL']
