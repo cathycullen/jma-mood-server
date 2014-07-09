@@ -55,17 +55,15 @@ get '/submit-login' do
   if params[:email]
     @user = User.find_by(email: params[:email])
     puts "/submit-login @user: #{@user}"
-    if @user
-      if @user.authenticate(params[:password])
-        session[:user_id] = @user.id
-        puts "/submit-login User was authenticated"
-        puts "/submit-login session[:user_id]: #{session[:user_id]}"
-        retval = @user.to_json
-      end
+    if @user && @user.authenticate(params[:password])
+      session[:user_id] = @user.id
+      puts "\nAUTHENTICATION: SUCCESS"
+      puts "session[:user_id] set to: #{session[:user_id]}"
+      retval = @user.to_json
+    else
+      puts "\nAUTHENTICATION: FAILED."
     end
   end
-  puts "/submit-login session.inspect: #{session.inspect}"
-  puts "/submit-login returning: #{retval}  session[:user_id] #{session[:user_id]}"
   retval
 end
 

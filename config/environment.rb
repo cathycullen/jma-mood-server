@@ -22,6 +22,8 @@ require 'sinatra'
 require "sinatra/reloader" if development?
 require 'sinatra/cookies'
 require 'bcrypt'
+require './lib/terse_params_logger'
+use TerseParamsLogger
 
 require 'erb'
 
