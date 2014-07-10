@@ -2,9 +2,9 @@ get "/logged-in" do
   puts "/currentUser session[:user_id]: #{session[:user_id]}"
 
   if session[:user_id]
-    "true"
+    200
   else
-    "false"
+    401
   end
 end
 
