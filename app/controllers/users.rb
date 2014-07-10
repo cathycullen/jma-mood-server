@@ -1,62 +1,31 @@
-get "/profile" do
-  redirect "/login" unless session[:user_id]
-  @user = User.find(session[:user_id])
-
-  erb :profile
-end
-
-get "/currentUser" do
-  retval = "{}"
-  puts "/currentUser session.inspect: #{session.inspect}"
-  puts "/currentUser session[:user_id]: #{session[:user_id]}"
-
-  if session[:user_id]
-
-    @user = User.find(session[:user_id])
-    if @user
-      puts "/currentUser @user: @user: #{@user} @user.to_json: #{@user.to_json}"
-      retval = @user.to_json
-    else "{}"
-    end
-  else "{}"
-  end
-  puts "/currentUser returning: #{retval}"
-  retval
-end
-
 get "/logged-in" do
-  retval = "false"
   puts "/currentUser session[:user_id]: #{session[:user_id]}"
 
   if session[:user_id]
-    retval = "true"
+    "true"
+  else
+    "false"
   end
-  puts "/logged-in returning: #{retval}"
-  retval
 end
 
-get '/submit-lost-password' do
-  puts "/submit-lost-password session.inspect: #{session.inspect}"
-  if session[:user_id]
+get '/forgot-password' do
+  if @user = User.find_by(email: params[:email])
+    puts "Found user: #{@user.inspect}"
 
-    @user = User.find(session[:user_id])
-    if @user
-      puts "@user: @user: #{@user} @user.to_json: #{@user.to_json}"
+    email = Mailer.send_password_link(@user)
+    email.deliver
 
-      email = Mailer.send_password_link(@user)
-      email.deliver
-      retval = @user.to_json
-    else "{}"
-    end
-  else "{}"
+    # send a short status message as the response
+    "reset email sent"
+  else
+    # return 404 status since we couldn't find a user for the
+    # submitted email address
+    404
   end
-  puts "/currentUser returning: #{retval}"
-  retval
 end
 
 get '/password-form' do
   # called from user email link
-  puts "/password-form called #{params}"
   if params[:token]
     @token = params[:token]
      erb :password_reset_form
@@ -67,7 +36,6 @@ get '/password-form' do
 end
 
 post '/password-reset' do
-  puts "/password-reset called #{params}"
   if params[:token] && params[:password]  && params[:password_check]
     if params[:password] == params[:password_check]
       @user = User.find_by(reset_token:  params[:token])
@@ -86,29 +54,28 @@ post '/password-reset' do
   end
 end
 
-get '/submit-new-user' do
-  puts "/submit-neww-user session.inspect: #{session.inspect}"
-  retval = ""
-  #make sure user doesn't already exist
+get '/create-new-user' do
+  # currently this doesn't work, because the form in
+  # the phone gap app doesn't include an input to select
+  # a coach
+  @coach = Coach.find_by(name: params[:coach])
+  if params[:email] && params[:password] && @coach
+    puts "coach #{@coach} : #{@coach.name}"
+    @user = User.create(name: params[:name],
+                        email: params[:email],
+                        role: "client",
+                        password: params[:password],
+                        coach_id: @coach.id)
 
-  if params[:name] && params[:email] && params[:password] && params[:coach]
-    @coach = Coach.where(:name => params[:coach]).first
-    if(@coach)
-      puts "coach #{@coach} : #{@coach.name}"
-      @user = User.create(name: params[:name],
-                          email: params[:email],
-                          role: "client",
-                          password: params[:password],
-                          coach_id: @coach.id)
+    email = Mailer.send_welcome_email(@user)
+    email.deliver
 
-      email = Mailer.send_welcome_email(@user)
-      email.deliver
-      retval = @user.to_json
-    else
-      retval = "unable to find coach #{params[:coach]} for user"
-    end
+    content_type :json
+    @user.to_json
   else
     "Missing parameters.  User #{params[:name]} not added"
+    # return a 400 status, since the request didn't include the required
+    # parameters
+    400
   end
-  retval
 end

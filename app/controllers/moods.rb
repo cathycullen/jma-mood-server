@@ -1,35 +1,29 @@
 get '/submit-mood' do
-  puts "/submit-mood session.inspect: #{session.inspect}"
-  puts "/submit-mood params #{params}"
+  if user = User.find_by(id: session[:user_id])
+    if params[:mood] && params[:origin] && params[:energy_level]
+      mood = Mood.new(mood: params[:mood],
+                      internal_external: params[:origin],
+                      thoughts: params[:thoughts],
+                      energy_level: params[:energy_level],
+                      user: user)
+      mood.save
 
-  puts "response.headers: #{response.headers}"
-  retval = ""
-	if params[:mood]  && params[:origin]  && params[:thoughts] && params[:energy_level]
-    if session[:user_id]
-    	user = User.find(session[:user_id])
-    	if user
-    		mood = Mood.new mood: params[:mood], internal_external: params[:origin], thoughts: params[:thoughts], energy_level: params[:energy_level]
-    		mood.user = user
-    		mood.save
-    		retval = "#{params[:mood]} submitted"
-
-        #if this mood does not exist in mood states then add to mood states for this user.
-        if MoodState.where(:state => params[:mood], :user_id => [nil, session[:user_id]]).count == 0
-          MoodState.create(:state => params[:mood], :user_id => session[:user_id])
-          puts "Custom mood #{params[:mood]} submitted for user #{session[:user_id]}"
-        end
-
-      else
-        retval = "user not found "
+      #if this mood does not exist in mood states then add to mood states for this user.
+      if MoodState.where(:state => params[:mood], :user_id => [nil, session[:user_id]]).count == 0
+        MoodState.create(:state => params[:mood], :user_id => session[:user_id])
+        puts "Custom mood #{params[:mood]} submitted for user #{session[:user_id]}"
       end
+
+      content_type :json
+      mood.to_json
     else
-      retval = "session[:user_id] is not defined"
+      # return a 400 status, since required parameters are missing
+      400
     end
   else
-    retval = "missing parameter mood or origin"
+    # return a 403 status, since the user isn't authenticated
+    403
   end
-  puts "/submit-mood returning: #{retval}"
-  retval
 end
 
 get '/mood-report-last-week' do

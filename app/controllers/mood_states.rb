@@ -1,5 +1,5 @@
 get '/mood-states' do
-  puts "/mood-states called"
+  content_type :json
 
   if session[:user_id]
     MoodState.where(:user_id => [nil, session[:user_id]]).to_json
