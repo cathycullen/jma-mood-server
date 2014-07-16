@@ -19,6 +19,10 @@ gem 'shotgun'
 
 gem 'bcrypt'
 
+group :production do
+  gem 'thin'
+end
+
 group :test do
   gem 'shoulda-matchers'
   gem 'rack-test'
