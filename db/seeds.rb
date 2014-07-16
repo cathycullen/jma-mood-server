@@ -8,7 +8,8 @@ u2 = User.create(name: "Baci", email: "baci@baci.com", role: "client", password:
 m = Mood.create(mood: "Happy", internal_external: "event-driven", thoughts: "holiday weekend", energy_level: 4, user_id: 2)
 m = Mood.create(mood: "Sad", internal_external: "self-directed", thoughts: "Not going to the beach", energy_level: 2, user_id: 2)
 
-path=APP_ROOT.join('db/seed_data','moods.txt')
+
+APP_ROOT = Pathname.new(File.expand_path('../../', __FILE__))
 
 path=APP_ROOT.join('db/seed_data','moods.txt')
 File.open(path, "r") do |f|
