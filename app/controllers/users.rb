@@ -58,6 +58,7 @@ get '/create-new-user' do
   # currently this doesn't work, because the form in
   # the phone gap app doesn't include an input to select
   # a coach
+  puts "/create-new-user: params:  #{params}"
   @coach = Coach.find_by(name: params[:coach])
   if params[:email] && params[:password] && @coach
     puts "coach #{@coach} : #{@coach.name}"
@@ -79,3 +80,11 @@ get '/create-new-user' do
     400
   end
 end
+
+get "/all-users" do
+  users = User.all
+
+  content_type :json
+  users.to_json
+end
+
