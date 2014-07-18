@@ -1,7 +1,5 @@
 get "/logged-in" do
-  puts "/currentUser session[:user_id]: #{session[:user_id]}"
-
-  if session[:user_id]
+  if params[:token] && AuthToken.exists?(token: params[:token])
     200
   else
     401

@@ -1,6 +1,9 @@
 post "/logout" do
-  session.clear
-  redirect "/login"
+  if token = AuthToken.find_by(token: params[:token])
+    token.destroy
+  end
+
+  200
 end
 
 get '/submit-login' do
@@ -8,10 +11,12 @@ get '/submit-login' do
 
   user = User.find_by(email: params[:email])
   if user && user.authenticate(params[:password])
-    session[:user_id] = user.id
-    puts "\nAUTHENTICATION: SUCCESS"
-    puts "session[:user_id] set to: #{session[:user_id]}"
-    user.to_json
+    token = user.auth_tokens.create
+
+    user_attributes = user.attributes
+
+    user_attributes[:token] = token.token
+    user_attributes.to_json
   else
     puts "\nAUTHENTICATION: FAILED."
 

@@ -1,5 +1,5 @@
 get '/submit-mood' do
-  if user = User.find_by(id: session[:user_id])
+  if user = user_for_auth_token
     if params[:mood] && params[:origin] && params[:energy_level]
       mood = Mood.new(mood: params[:mood],
                       internal_external: params[:origin],
@@ -9,9 +9,9 @@ get '/submit-mood' do
       mood.save
 
       #if this mood does not exist in mood states then add to mood states for this user.
-      if MoodState.where(:state => params[:mood], :user_id => [nil, session[:user_id]]).count == 0
-        MoodState.create(:state => params[:mood], :user_id => session[:user_id])
-        puts "Custom mood #{params[:mood]} submitted for user #{session[:user_id]}"
+      if MoodState.where(:state => params[:mood], :user_id => [nil, user.id]).count == 0
+        MoodState.create(:state => params[:mood], :user_id => user.id)
+        puts "Custom mood #{params[:mood]} submitted for user #{user.id}"
       end
 
       content_type :json
@@ -27,16 +27,16 @@ get '/submit-mood' do
 end
 
 get '/mood-report-last-week' do
-  if session[:user_id]
-    Mood.where(:user_id => session[:user_id], :created_at => 1.week.ago..Time.now).to_json
+  if user_for_auth_token
+    Mood.where(:user_id => user_for_auth_token.id, :created_at => 1.week.ago..Time.now).to_json
   else
     ""
   end
 end
 
 get '/mood-report-last-month' do
-  if session[:user_id]
-    Mood.where(:user_id => session[:user_id], :created_at => 1.month.ago..Time.now).to_json
+  if user_for_auth_token
+    Mood.where(:user_id => user_for_auth_token.id, :created_at => 1.month.ago..Time.now).to_json
   else
     ""
   end
@@ -44,16 +44,14 @@ end
 
 get '/send-weekly-mood-report' do
   puts "/send-weekly-mood-report"
-  if session[:user_id]
-      @user = User.find(session[:user_id])
-      moods = Mood.where(:user_id => session[:user_id], :created_at => 1.week.ago..Time.now)
+  if @user = user_for_auth_token
+      moods = Mood.where(:user_id => @user.id, :created_at => 1.week.ago..Time.now)
 
       puts "send weekly mood report call mailer"
       email = Mailer.send_weekly_mood_report(@user, @user.coach, moods)
       email.deliver
       retval = moods.to_json
   else
-    puts "no session user id"
     ""
   end
 end
@@ -61,9 +59,8 @@ end
 
 get '/send-monthly-mood-report' do
   puts "/send-monthly-mood-report"
-  if session[:user_id]
-      @user = User.find(session[:user_id])
-      moods = Mood.where(:user_id => session[:user_id], :created_at => 1.month.ago..Time.now)
+  if @user = user_for_auth_token
+      moods = Mood.where(:user_id => @user.id, :created_at => 1.month.ago..Time.now)
 
       email = Mailer.send_weekly_mood_report(@user, @user.coach, moods)
       email.deliver
