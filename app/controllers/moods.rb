@@ -27,18 +27,22 @@ get '/submit-mood' do
 end
 
 get '/mood-report-last-week' do
+  content_type :json
+
   if user_for_auth_token
     Mood.where(:user_id => user_for_auth_token.id, :created_at => 1.week.ago..Time.now).to_json
   else
-    ""
+    401
   end
 end
 
 get '/mood-report-last-month' do
+  content_type :json
+
   if user_for_auth_token
     Mood.where(:user_id => user_for_auth_token.id, :created_at => 1.month.ago..Time.now).to_json
   else
-    ""
+    401
   end
 end
 
@@ -52,7 +56,7 @@ get '/send-weekly-mood-report' do
       email.deliver
       retval = moods.to_json
   else
-    ""
+    401
   end
 end
 
@@ -66,10 +70,9 @@ get '/send-monthly-mood-report' do
       email.deliver
       retval = moods.to_json
   else
-    ""
+    401
   end
 end
-
 
 get "/all-moods" do
   moods = Mood.all
