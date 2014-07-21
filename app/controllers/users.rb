@@ -68,6 +68,8 @@ get '/create-new-user' do
 
     email = Mailer.send_welcome_email(@user)
     email.deliver
+    email  = Mailer.alert_admin_new_user(@user)
+    email.deliver
 
     content_type :json
     @user.to_json

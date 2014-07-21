@@ -54,6 +54,30 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
       end
     end
 
+     def alert_admin_new_user(user)
+      @user = user
+
+      ActionMailer::Base.smtp_settings = {
+        :address   => ENV['DEV_ADDRESS'],
+        :port      => ENV['DEV_PORT'],
+        :domain    => ENV['DEV_DOMAIN'],
+        :authentication => :"login",
+        :user_name      => ENV['DEV_USER'],
+        :password       => ENV['DEV_PASS'],
+        :enable_starttls_auto => true,
+      }
+
+      puts "sending new user alert email for #{@user.name}  #{@user.email} to: JMA admin: #{ENV['DEV_FROM_ADDRESS']}"
+      mail( 
+        :to      =>   ENV['JMA_SUPPORT_EMAIL'],
+        :from    => ENV['JMA_SUPPORT_EMAIL'],
+        :subject => "Mood Matters New User Added",
+      ) do |format|
+        format.html
+        format.text
+      end
+    end
+
     def send_weekly_mood_report(user, coach, results)
       @user = user
       @coach = coach
