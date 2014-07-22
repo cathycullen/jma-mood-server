@@ -70,7 +70,11 @@ get '/create-new-user' do
     email.deliver
 
     content_type :json
-    @user.to_json
+
+    token = @user.auth_tokens.create
+    user_attributes = @user.attributes
+    user_attributes[:token] = token.token
+    user_attributes.to_json
   else
     "Missing parameters.  User #{params[:name]} not added"
     # return a 400 status, since the request didn't include the required
