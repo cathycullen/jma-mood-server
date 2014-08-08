@@ -10,20 +10,20 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
       @user = user
 
       ActionMailer::Base.smtp_settings = {
-        :address   => ENV['DEV_ADDRESS'],
-        :port      => ENV['DEV_PORT'],
-        :domain    => ENV['DEV_DOMAIN'],
+        :address   => ENV['JMA_ADDRESS'],
+        :port      => ENV['JMA_PORT'],
+        :domain    => ENV['JMA_DOMAIN'],
         :authentication => :"login",
-        :user_name      => ENV['DEV_USER'],
-        :password       => ENV['DEV_PASS'],
+        :user_name      => ENV['JMA_USER'],
+        :password       => ENV['JMA_PASS'],
         :enable_starttls_auto => true,
       }
 
-      puts "sending password reminder to: #{@user.email} from: #{ENV['DEV_FROM_ADDRESS']}"
+      puts "sending password reminder to: #{@user.email} from: #{ENV['JMA_FROM_ADDRESS']}"
       mail(
         :to      =>  @user.email,
-        :from    => ENV['DEV_FROM_ADDRESS'],
-        :subject => "JMA Moodminder Information ",
+        :from    => ENV['JMA_FROM_ADDRESS'],
+        :subject => "JMA Mood Matters Information ",
       ) do |format|
         format.html
         format.text
@@ -34,20 +34,20 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
       @user = user
 
       ActionMailer::Base.smtp_settings = {
-        :address   => ENV['DEV_ADDRESS'],
-        :port      => ENV['DEV_PORT'],
-        :domain    => ENV['DEV_DOMAIN'],
+        :address   => ENV['JMA_ADDRESS'],
+        :port      => ENV['JMA_PORT'],
+        :domain    => ENV['JMA_DOMAIN'],
         :authentication => :"login",
-        :user_name      => ENV['DEV_USER'],
-        :password       => ENV['DEV_PASS'],
+        :user_name      => ENV['JMA_USER'],
+        :password       => ENV['JMA_PASS'],
         :enable_starttls_auto => true,
       }
 
-      puts "sending welcome email to: #{@user.email} from: #{ENV['DEV_FROM_ADDRESS']}"
+      puts "sending welcome email to: #{@user.email} from: #{ENV['JMA_FROM_ADDRESS']}"
       mail( 
         :to      =>  @user.email,
-        :from    => ENV['DEV_FROM_ADDRESS'],
-        :subject => "Welcome to Moodminder",
+        :from    => ENV['JMA_FROM_ADDRESS'],
+        :subject => "Welcome to Mood Matters,
       ) do |format|
         format.html
         format.text
@@ -58,16 +58,16 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
       @user = user
 
       ActionMailer::Base.smtp_settings = {
-        :address   => ENV['DEV_ADDRESS'],
-        :port      => ENV['DEV_PORT'],
-        :domain    => ENV['DEV_DOMAIN'],
+        :address   => ENV['JMA_ADDRESS'],
+        :port      => ENV['JMA_PORT'],
+        :domain    => ENV['JMA_DOMAIN'],
         :authentication => :"login",
-        :user_name      => ENV['DEV_USER'],
-        :password       => ENV['DEV_PASS'],
+        :user_name      => ENV['JMA_USER'],
+        :password       => ENV['JMA_PASS'],
         :enable_starttls_auto => true,
       }
 
-      puts "sending new user alert email for #{@user.name}  #{@user.email} to: JMA admin: #{ENV['DEV_FROM_ADDRESS']}"
+      puts "sending new user alert email for #{@user.name}  #{@user.email} to: JMA admin: #{ENV['JMA_FROM_ADDRESS']}"
       mail( 
         :to      =>   ENV['JMA_SUPPORT_EMAIL'],
         :from    => ENV['JMA_SUPPORT_EMAIL'],
@@ -86,16 +86,16 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
       puts "mailer.rb send_weekly_mood_report called"
 
       ActionMailer::Base.smtp_settings = {
-        :address   => ENV['DEV_ADDRESS'],
-        :port      => ENV['DEV_PORT'],
-        :domain    => ENV['DEV_DOMAIN'],
+        :address   => ENV['JMA_ADDRESS'],
+        :port      => ENV['JMA_PORT'],
+        :domain    => ENV['JMA_DOMAIN'],
         :authentication => :"login",
-        :user_name      => ENV['DEV_USER'],
-        :password       => ENV['DEV_PASS'],
+        :user_name      => ENV['JMA_USER'],
+        :password       => ENV['JMA_PASS'],
         :enable_starttls_auto => true,
       }
 
-      puts "sending weekly mood report to: #{@user.email} and coach: #{coach.name}from: #{ENV['DEV_FROM_ADDRESS']}"
+      puts "sending weekly mood report to: #{@user.email} and coach: #{coach.name}from: #{ENV['JMA_FROM_ADDRESS']}"
       @results.each do |entry|
         puts "date/time: #{entry.created_at} mood:  #{entry.mood} source: #{entry.internal_external}"
       end
@@ -103,8 +103,8 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
       recipients = [@user.email, @coach.email]
       mail(
         :to      =>  recipients.join(";"),
-        :from    => ENV['DEV_FROM_ADDRESS'],
-        :subject => "Weekly Moodminder Report For #{@user.name}",
+        :from    => ENV['JMA_FROM_ADDRESS'],
+        :subject => "Weekly Mood Matters Report For #{@user.name}",
       ) do |format|
         format.html
         format.text
@@ -118,16 +118,16 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
       @results = results
 
       ActionMailer::Base.smtp_settings = {
-        :address   => ENV['DEV_ADDRESS'],
-        :port      => ENV['DEV_PORT'],
-        :domain    => ENV['DEV_DOMAIN'],
+        :address   => ENV['JMA_ADDRESS'],
+        :port      => ENV['JMA_PORT'],
+        :domain    => ENV['JMA_DOMAIN'],
         :authentication => :"login",
-        :user_name      => ENV['DEV_USER'],
-        :password       => ENV['DEV_PASS'],
+        :user_name      => ENV['JMA_USER'],
+        :password       => ENV['JMA_PASS'],
         :enable_starttls_auto => true,
       }
 
-      puts "sending monthly mood report to: #{@user.email} and coach: #{coach.name}from: #{ENV['DEV_FROM_ADDRESS']}"
+      puts "sending monthly mood report to: #{@user.email} and coach: #{coach.name}from: #{ENV['JMA_FROM_ADDRESS']}"
       @results.each do |entry|
         puts "date/time: #{entry.created_at} mood:  #{entry.mood} source: #{entry.internal_external}"
       end
@@ -135,8 +135,8 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
       recipients = [@user.email, @coach.email]
       mail(
         :to      =>  recipients.join(";"),
-        :from    => ENV['DEV_FROM_ADDRESS'],
-        :subject => "Monthly Moodminder Report For #{@user.name}",
+        :from    => ENV['JMA_FROM_ADDRESS'],
+        :subject => "Monthly Mood Matters Report For #{@user.name}",
       ) do |format|
         format.html
         format.text
@@ -148,19 +148,19 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
       @email = email
 
       ActionMailer::Base.smtp_settings = {
-        :address   => ENV['DEV_ADDRESS'],
-        :port      => ENV['DEV_PORT'],
-        :domain    => ENV['DEV_DOMAIN'],
+        :address   => ENV['JMA_ADDRESS'],
+        :port      => ENV['JMA_PORT'],
+        :domain    => ENV['JMA_DOMAIN'],
         :authentication => :"login",
-        :user_name      => ENV['DEV_USER'],
-        :password       => ENV['DEV_PASS'],
+        :user_name      => ENV['JMA_USER'],
+        :password       => ENV['JMA_PASS'],
         :enable_starttls_auto => true,
       }
       puts "sending confirm to jma support team at this address:  #{ENV['JMA_SUPPORT_EMAIL']} from: #{ENV['JMA_FROM_ADDRESS']}"
       mail(
         :to      => ENV['JMA_SUPPORT_EMAIL'],
-        :from    => ENV['DEV_FROM_ADDRESS'],
-        :subject => "JMA Mood Minder Stuff",
+        :from    => ENV['JMA_FROM_ADDRESS'],
+        :subject => "JMA Mood Matters",
       ) do |format|
         format.html
         format.text
@@ -185,7 +185,7 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
       mail( 
         :to      => ENV['DEVELOPER_EMAIL'],
         :from    => ENV['JMA_FROM_ADDRESS'],
-        :subject => "Mood Minder Thank You For Your Registering",
+        :subject => "Mood Matters Thank You For Your Registering",
       ) do |format|
         format.html
         format.text
