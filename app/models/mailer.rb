@@ -83,7 +83,7 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
       @coach = coach
       @results = results
 
-      puts "mailer.rb send_weekly_mood_report called"
+      puts "mailer.rb send_weekly_mood_report called.  from ENV['JMA_FROM_ADDRESS']: #{ENV['JMA_FROM_ADDRESS']}"
 
       ActionMailer::Base.smtp_settings = {
         :address   => ENV['JMA_ADDRESS'],
