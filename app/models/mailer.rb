@@ -47,12 +47,13 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
       mail( 
         :to      =>  @user.email,
         :from    => ENV['JMA_FROM_ADDRESS'],
-        :subject => "Welcome to Mood Matters,
+        :subject => "Welcome to Mood Matters",
       ) do |format|
         format.html
         format.text
       end
     end
+    
 
      def alert_admin_new_user(user)
       @user = user
