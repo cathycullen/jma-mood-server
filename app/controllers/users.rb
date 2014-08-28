@@ -57,31 +57,42 @@ get '/create-new-user' do
   # the phone gap app doesn't include an input to select
   # a coach
   puts "/create-new-user: params:  #{params}"
-  @coach = Coach.find_by(name: params[:coach])
-  if params[:email] && params[:password] && @coach
-    puts "coach #{@coach} : #{@coach.name}"
-    @user = User.create(name: params[:name],
-                        email: params[:email],
-                        role: "client",
-                        password: params[:password],
-                        coach_id: @coach.id)
 
-    email = Mailer.send_welcome_email(@user)
-    email.deliver
-    email  = Mailer.alert_admin_new_user(@user)
-    email.deliver
+  #make sure the user does not already have a login
+  @user = User.where(:email => params[:email])
 
-    content_type :json
+  if @user.nil?
+    @coach = Coach.find_by(name: params[:coach])
+    if params[:email] && params[:password] && @coach
+      puts "coach #{@coach} : #{@coach.name}"
+      @user = User.create(name: params[:name],
+                          email: params[:email],
+                          role: "client",
+                          password: params[:password],
+                          coach_id: @coach.id)
 
-    token = @user.auth_tokens.create
-    user_attributes = @user.attributes
-    user_attributes[:token] = token.token
-    user_attributes.to_json
+      email = Mailer.send_welcome_email(@user)
+      email.deliver
+      email  = Mailer.alert_admin_new_user(@user)
+      email.deliver
+
+      content_type :json
+
+      token = @user.auth_tokens.create
+      user_attributes = @user.attributes
+      user_attributes[:token] = token.token
+      user_attributes.to_json
+    else
+      "Missing parameters.  User #{params[:name]} not added"
+      # return a 400 status, since the request didn't include the required
+      # parameters
+      400
+  end
   else
-    "Missing parameters.  User #{params[:name]} not added"
-    # return a 400 status, since the request didn't include the required
-    # parameters
-    400
+      "User already registered.  User #{params[:email]} not added"
+      # return a 400 status, since the request was invalid
+      # parameters
+      400
   end
 end
 
