@@ -60,6 +60,17 @@ get '/send-weekly-mood-report' do
   end
 end
 
+get '/test-weekly-mood-report' do
+  puts "/user-weekly-mood-report"
+  if @user = User.where(:email => "cathy@softwareoptions.com").first
+      @results = Mood.where(:user_id => @user.id, :created_at => 1.week.ago..Time.now).order("created_at DESC")
+
+      puts "test weekly mood report with graph"
+      erb :test_weekly_mood_report
+  else
+    "nothing found"
+  end
+end
 
 get '/send-monthly-mood-report' do
   puts "/send-monthly-mood-report"

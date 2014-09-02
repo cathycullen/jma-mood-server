@@ -23,6 +23,7 @@ require "sinatra/reloader" if development?
 require 'sinatra/cookies'
 require 'bcrypt'
 require './lib/terse_params_logger'
+require 'chartkick'
 use TerseParamsLogger
 
 require 'erb'
