@@ -59,9 +59,8 @@ get '/create-new-user' do
   puts "/create-new-user: params:  #{params}"
 
   #make sure the user does not already have a login
-  @user = User.where(:email => params[:email])
 
-  if @user.nil?
+  if User.where(:email => params[:email]).count == 0
     @coach = Coach.find_by(name: params[:coach])
     if params[:email] && params[:password] && @coach
       puts "coach #{@coach} : #{@coach.name}"
@@ -77,18 +76,19 @@ get '/create-new-user' do
       email.deliver
 
       content_type :json
-
       token = @user.auth_tokens.create
       user_attributes = @user.attributes
       user_attributes[:token] = token.token
       user_attributes.to_json
     else
+      puts "Missing parameters.  User #{params[:name]} not added"
       "Missing parameters.  User #{params[:name]} not added"
       # return a 400 status, since the request didn't include the required
       # parameters
       400
   end
   else
+    puts "User already registered.  User #{params[:email]} not added"
       "User already registered.  User #{params[:email]} not added"
       # return a 400 status, since the request was invalid
       # parameters
