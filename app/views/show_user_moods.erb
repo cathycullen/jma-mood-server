@@ -12,19 +12,21 @@
       </tr>
     </thead>
     <tbody>
-      <% @the_moods.all.each do |mood| %>
-        <tr>
-          <td><%= mood.created_at.strftime("%F: %T") %></td>
-          <td><%= mood.mood %></td>
-          <td><%= mood.internal_external %></td>
-          <td><%= mood.energy_level %></td>
-          <td><%= mood.thoughts %></td>
-        </tr> 
+      <% if @the_moods.count > 0 %>
+        <% @the_moods.all.each do |mood| %>
+          <tr>
+            <td><%= mood.created_at.strftime("%F: %T") %></td>
+            <td><%= mood.mood %></td>
+            <td><%= mood.internal_external %></td>
+            <td><%= mood.energy_level %></td>
+            <td><%= mood.thoughts %></td>
+          </tr> 
+          <% end %> 
         <% end %> 
     </tbody>
   </table>
   <br> 
     <form action="/users"  method="post" > 
     <br>
-    <input type="submit" class="btn btn-success value="Upload!">
+    <input type="submit" class="btn btn-success text="Users" value="Back To Users">
 </div>

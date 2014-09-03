@@ -80,7 +80,6 @@ get '/user_moods/:id'  do
   path = request.fullpath 
 
   puts "path: #{path}"  
-  puts "mood.first: #{@the_moods.first.mood}"
   erb :show_user_moods
   end
 
