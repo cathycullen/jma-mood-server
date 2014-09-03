@@ -103,3 +103,13 @@ get "/all-users" do
   users.to_json
 end
 
+get '/users' do
+  erb :users
+end
+
+
+post '/users' do
+  erb :users
+end
+
+

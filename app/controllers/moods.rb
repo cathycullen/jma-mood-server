@@ -74,6 +74,16 @@ get '/send-monthly-mood-report' do
   end
 end
 
+get '/user_moods/:id'  do
+  @the_moods = Mood.where(:user_id => params[:id])
+  @the_user  = User.find(params[:id])
+  path = request.fullpath 
+
+  puts "path: #{path}"  
+  puts "mood.first: #{@the_moods.first.mood}"
+  erb :show_user_moods
+  end
+
 get "/all-moods" do
   moods = Mood.all
 

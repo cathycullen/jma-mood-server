@@ -1,0 +1,27 @@
+<div >
+  <h2>JMA Mood Matters List of Users</h2>
+
+  <table class="table table-condensed table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Coach</th>
+        <th>Moods</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% User.all.each do |user| %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td><%= user.coach.name %></td>
+          <td><a href=/user_moods/<%= user.id %> >Moods</td>
+        </tr>	
+        <% end %>	
+    </tbody>
+  </table>
+  <br>  
+</div>

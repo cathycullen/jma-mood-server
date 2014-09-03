@@ -1,0 +1,30 @@
+<div >
+  <h2>Moods For <%= @the_user.name %></h2>
+
+  <table class="table table-condensed table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Mood</th>
+        <th>Source</th>
+        <th>Level</th>
+        <th>Thoughts</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @the_moods.all.each do |mood| %>
+        <tr>
+          <td><%= mood.created_at.strftime("%F: %T") %></td>
+          <td><%= mood.mood %></td>
+          <td><%= mood.internal_external %></td>
+          <td><%= mood.energy_level %></td>
+          <td><%= mood.thoughts %></td>
+        </tr> 
+        <% end %> 
+    </tbody>
+  </table>
+  <br> 
+    <form action="/users"  method="post" > 
+    <br>
+    <input type="submit" class="btn btn-success value="Upload!">
+</div>
