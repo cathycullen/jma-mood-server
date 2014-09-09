@@ -53,7 +53,7 @@ get '/send-weekly-mood-report' do
       @chart_results = @results.unscoped.group(:energy_level).count
 
       puts "send weekly mood report call mailer"
-      email = Mailer.send_weekly_mood_report(@user, @user.coach, @results)
+      email = Mailer.send_weekly_mood_report(@user, @user.coach, @results, @chart_results)
       email.deliver
       retval = moods.to_json
   else
@@ -68,7 +68,7 @@ get '/send-monthly-mood-report' do
       @results = Mood.where(:user_id => @user.id, :created_at => 1.month.ago..Time.now).order("created_at DESC")
       @chart_results = @results.unscoped.group(:energy_level).count
 
-      email = Mailer.send_weekly_mood_report(@user, @user.coach, @results)
+      email = Mailer.send_weekly_mood_report(@user, @user.coach, @results, @chart_results)
       email.deliver
       retval = moods.to_json
   else

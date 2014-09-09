@@ -89,10 +89,12 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
       end
     end
 
-    def send_weekly_mood_report(user, coach, results)
+    def send_weekly_mood_report(user, coach, results, chart_results)
       @user = user
       @coach = coach
       @results = results
+      @chart_results = chart_results
+      puts "send_weekly_mood_report chart_results #{@chart_results}"
 
       puts "mailer.rb send_weekly_mood_report called.  from ENV['JMA_FROM_ADDRESS']: #{ENV['JMA_FROM_ADDRESS']}"
 
@@ -123,10 +125,13 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
     end
 
 
-    def send_monthly_mood_report(user, coach, results)
+    def send_monthly_mood_report(user, coach, results, chart_results)
       @user = user
       @coach = coach
       @results = results
+      @chart_results = chart_results
+
+      puts "send_monthly_mood_report chart_results #{@chart_results}"
 
       ActionMailer::Base.smtp_settings = {
         :address   => ENV['JMA_ADDRESS'],
