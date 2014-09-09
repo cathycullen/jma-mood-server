@@ -31,51 +31,61 @@ ActionMailer::Base.view_paths= File.dirname(__FILE__)
     end
 
      def send_welcome_email(user)
-      @user = user
+      begin
+        @user = user
 
-      ActionMailer::Base.smtp_settings = {
-        :address   => ENV['JMA_ADDRESS'],
-        :port      => ENV['JMA_PORT'],
-        :domain    => ENV['JMA_DOMAIN'],
-        :authentication => :"login",
-        :user_name      => ENV['JMA_USER'],
-        :password       => ENV['JMA_PASS'],
-        :enable_starttls_auto => true,
-      }
+        ActionMailer::Base.smtp_settings = {
+          :address   => ENV['JMA_ADDRESS'],
+          :port      => ENV['JMA_PORT'],
+          :domain    => ENV['JMA_DOMAIN'],
+          :authentication => :"login",
+          :user_name      => ENV['JMA_USER'],
+          :password       => ENV['JMA_PASS'],
+          :enable_starttls_auto => true,
+        }
 
-      puts "sending welcome email to: #{@user.email} from: #{ENV['JMA_FROM_ADDRESS']}"
-      mail( 
-        :to      =>  @user.email,
-        :from    => ENV['JMA_FROM_ADDRESS'],
-        :subject => "Welcome to Mood Matters",
-      ) do |format|
-        format.html
-        format.text
+        puts "sending welcome email to: #{@user.email} from: #{ENV['JMA_FROM_ADDRESS']}"
+        mail( 
+          :to      =>  @user.email,
+          :from    => ENV['JMA_FROM_ADDRESS'],
+          :subject => "Welcome to Mood Matters",
+        ) do |format|
+          format.html
+          format.text
+        end
+
+      rescue Exception => e
+        puts "rescue caught in send_welcome_email #{e.message}"
       end
     end
     
 
      def alert_admin_new_user(user)
-      @user = user
+      begin
+        @user = user
 
-      ActionMailer::Base.smtp_settings = {
-        :address   => ENV['JMA_ADDRESS'],
-        :port      => ENV['JMA_PORT'],
-        :domain    => ENV['JMA_DOMAIN'],
-        :authentication => :"login",
-        :user_name      => ENV['JMA_USER'],
-        :password       => ENV['JMA_PASS'],
-        :enable_starttls_auto => true,
-      }
+        ActionMailer::Base.smtp_settings = {
+          :address   => ENV['JMA_ADDRESS'],
+          :port      => ENV['JMA_PORT'],
+          :domain    => ENV['JMA_DOMAIN'],
+          :authentication => :"login",
+          :user_name      => ENV['JMA_USER'],
+          :password       => ENV['JMA_PASS'],
+          :enable_starttls_auto => true,
+        }
 
-      puts "sending new user alert email for #{@user.name}  #{@user.email} to: JMA admin: #{ENV['JMA_FROM_ADDRESS']}"
-      mail( 
-        :to      =>   ENV['JMA_SUPPORT_EMAIL'],
-        :from    => ENV['JMA_SUPPORT_EMAIL'],
-        :subject => "Mood Matters New User Added",
-      ) do |format|
-        format.html
-        format.text
+        puts "sending new user alert email for #{@user.name}  #{@user.email} to: JMA admin: #{ENV['JMA_FROM_ADDRESS']}"
+        mail( 
+          :to      =>   ENV['JMA_SUPPORT_EMAIL'],
+          :from    => ENV['JMA_SUPPORT_EMAIL'],
+          :subject => "Mood Matters New User Added",
+        ) do |format|
+          format.html
+          format.text
+        end
+
+      rescue Exception => e
+        puts "rescue caught in alert_admin_new_user #{e.message}"
       end
     end
 

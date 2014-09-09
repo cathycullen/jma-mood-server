@@ -69,11 +69,15 @@ get '/create-new-user' do
                           role: "client",
                           password: params[:password],
                           coach_id: @coach.id)
+      begin 
+        email = Mailer.send_welcome_email(@user)
+        email.deliver
+        email  = Mailer.alert_admin_new_user(@user)
+        email.deliver
 
-      email = Mailer.send_welcome_email(@user)
-      email.deliver
-      email  = Mailer.alert_admin_new_user(@user)
-      email.deliver
+      rescue Exception => e
+        puts "rescue caught sending email #{e.message}"
+      end
 
       content_type :json
       token = @user.auth_tokens.create
