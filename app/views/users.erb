@@ -4,13 +4,15 @@
 
   <table class="table table-condensed table-bordered table-striped table-hover">
     <col style="width:5%">
-    <col style="width:30%">
-    <col style="width:30%">
+    <col style="width:15%">
+    <col style="width:20%">
+    <col style="width:25%">
     <col style="width:25%">
     <col style="width:10%">
     <thead>
       <tr>
         <th>Id</th>
+        <th>Start</th>
         <th>Name</th>
         <th>Email</th>
         <th>Coach</th>
@@ -21,6 +23,11 @@
       <% User.order(:name).all.each do |user| %>
         <tr>
           <td><%= user.id %></td>
+          <% if user.created_at.nil? %>
+          <td></td>
+          <% else %>
+          <td><%= user.created_at.strftime("%F") %></td>
+          <% end %>
           <td><%= user.name %></td>
           <td><%= user.email %></td>
           <td><%= user.coach.name %></td>
