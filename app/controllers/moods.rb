@@ -49,10 +49,11 @@ end
 get '/send-weekly-mood-report' do
   puts "/send-weekly-mood-report"
   if @user = user_for_auth_token
-      moods = Mood.where(:user_id => @user.id, :created_at => 1.week.ago..Time.now).order("created_at DESC")
+      @results = Mood.where(:user_id => @user.id, :created_at => 1.week.ago..Time.now).order("created_at DESC")
+      @chart_results = @results.unscoped.group(:energy_level).count
 
       puts "send weekly mood report call mailer"
-      email = Mailer.send_weekly_mood_report(@user, @user.coach, moods)
+      email = Mailer.send_weekly_mood_report(@user, @user.coach, @results)
       email.deliver
       retval = moods.to_json
   else
@@ -64,9 +65,10 @@ end
 get '/send-monthly-mood-report' do
   puts "/send-monthly-mood-report"
   if @user = user_for_auth_token
-      moods = Mood.where(:user_id => @user.id, :created_at => 1.month.ago..Time.now).order("created_at DESC")
+      @results = Mood.where(:user_id => @user.id, :created_at => 1.month.ago..Time.now).order("created_at DESC")
+      @chart_results = @results.unscoped.group(:energy_level).count
 
-      email = Mailer.send_weekly_mood_report(@user, @user.coach, moods)
+      email = Mailer.send_weekly_mood_report(@user, @user.coach, @results)
       email.deliver
       retval = moods.to_json
   else
@@ -76,6 +78,7 @@ end
 
 get '/user_moods/:id'  do
   @the_moods = Mood.where(:user_id => params[:id])
+  @chart_results = @the_moods.unscoped.group(:energy_level).count
   @the_user  = User.find(params[:id])
   path = request.fullpath 
 
@@ -89,5 +92,21 @@ get "/all-moods" do
   content_type :json
   moods.to_json
 end
+
+
+get '/test-weekly-mood-report' do
+  puts "/user-weekly-mood-report"
+  if @user = User.where(:email => "cathy@softwareoptions.com").first
+      @results = Mood.where(:user_id => @user.id, :created_at => 1.week.ago..Time.now).order("created_at DESC")
+      @chart_results = @results.unscoped.group(:energy_level).count
+
+      puts "test weekly mood report with graph"
+      erb :test_weekly_mood_report
+  else
+    "nothing found"
+  end
+end
+
+
 
 

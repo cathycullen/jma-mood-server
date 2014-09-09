@@ -26,7 +26,7 @@
 	<div class="wrapper" >
 		<a href="http://www.jodymichael.com"><img src="http://www.jodymichael.com/filebin/images/logo.png" alt="<= @reference %>"></a>
 	<div>	
-	<h3>Monthly MoodMatters Report for <%= @user.name%></h3> <table class="table table-condensed table-bordered table-striped table-hover">
+	<h3>Weekly MoodMatters Report for <%= @user.name%></h3> <table class="table table-condensed table-bordered table-striped table-hover">
 		<table class="table table-condensed table-bordered table-striped table-hover">
 			<thead>
 				<tr>
@@ -55,8 +55,8 @@
 		</tbody>
 	</table>	
 	<br>
-		<h3>Where Did You Spend Your Time?</h3>
-		<%= pie_chart @chart_results %>
+	    <h3>Where Did You Spend Your Time?</h3>
+	    <%= pie_chart @chart_results %>
 	</div>
 </div>
 </body>

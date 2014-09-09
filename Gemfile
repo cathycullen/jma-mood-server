@@ -18,6 +18,7 @@ gem 'rake'
 gem 'shotgun'
 
 gem 'bcrypt'
+gem 'chartkick'
 
 group :production do
   gem 'thin'
