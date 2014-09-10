@@ -55,7 +55,7 @@ get '/send-weekly-mood-report' do
       puts "send weekly mood report call mailer"
       email = Mailer.send_weekly_mood_report(@user, @user.coach, @results, @chart_results)
       email.deliver
-      retval = moods.to_json
+      retval = @results.to_json
   else
     401
   end
@@ -70,7 +70,7 @@ get '/send-monthly-mood-report' do
 
       email = Mailer.send_weekly_mood_report(@user, @user.coach, @results, @chart_results)
       email.deliver
-      retval = moods.to_json
+      retval = @results.to_json
   else
     401
   end
