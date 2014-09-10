@@ -62,6 +62,22 @@ get '/send-weekly-mood-report' do
 end
 
 
+get '/test_send-weekly-mood-report' do
+  puts "/test-send-weekly-mood-report"
+  if @user = User.where(:email => "cathy@softwareoptions.com").first
+    puts "@user #{@user.name}   #{@user.id}"
+      @results = Mood.where(:user_id => @user.id, :created_at => 1.week.ago..Time.now).order("created_at DESC")
+      @chart_results = @results.unscoped.group(:energy_level).count
+
+      puts "send weekly mood report call mailer"
+      email = Mailer.send_weekly_mood_report(@user, @user.coach, @results, @chart_results)
+      email.deliver
+      retval = @results.to_json
+  else
+    401
+  end
+end
+
 get '/send-monthly-mood-report' do
   puts "/send-monthly-mood-report"
   if @user = user_for_auth_token
