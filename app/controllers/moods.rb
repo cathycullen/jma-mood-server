@@ -95,6 +95,7 @@ end
 get '/user_moods/:id'  do
   @the_moods = Mood.where(:user_id => params[:id])
   @chart_results = @the_moods.unscoped.group(:energy_level).count
+  puts "@chart_results #{@chart_results} mood count: #{@the_moods.count}"
   @the_user  = User.find(params[:id])
   path = request.fullpath 
 
