@@ -50,7 +50,7 @@ get '/send-weekly-mood-report' do
   puts "/send-weekly-mood-report"
   if @user = user_for_auth_token
       @results = Mood.where(:user_id => @user.id, :created_at => 1.week.ago..Time.now).order("created_at DESC")
-      @chart_results = @results.unscoped.group(:energy_level).count
+      @chart_results = @results.group(:energy_level).count
 
       puts "send weekly mood report call mailer"
       email = Mailer.send_weekly_mood_report(@user, @user.coach, @results, @chart_results)
@@ -67,7 +67,7 @@ get '/test_send-weekly-mood-report' do
   if @user = User.where(:email => "cathy@softwareoptions.com").first
     puts "@user #{@user.name}   #{@user.id}"
       @results = Mood.where(:user_id => @user.id, :created_at => 1.week.ago..Time.now).order("created_at DESC")
-      @chart_results = @results.unscoped.group(:energy_level).count
+      @chart_results = @results.group(:energy_level).count
 
       puts "send weekly mood report call mailer"
       email = Mailer.send_weekly_mood_report(@user, @user.coach, @results, @chart_results)
@@ -82,7 +82,7 @@ get '/send-monthly-mood-report' do
   puts "/send-monthly-mood-report"
   if @user = user_for_auth_token
       @results = Mood.where(:user_id => @user.id, :created_at => 1.month.ago..Time.now).order("created_at DESC")
-      @chart_results = @results.unscoped.group(:energy_level).count
+      @chart_results = @results.group(:energy_level).count
 
       email = Mailer.send_weekly_mood_report(@user, @user.coach, @results, @chart_results)
       email.deliver
@@ -94,7 +94,7 @@ end
 
 get '/user_moods/:id'  do
   @the_moods = Mood.where(:user_id => params[:id])
-  @chart_results = @the_moods.unscoped.group(:energy_level).count
+  @chart_results = @the_moods.group(:energy_level).count
   puts "@chart_results #{@chart_results} mood count: #{@the_moods.count}"
   @the_user  = User.find(params[:id])
   path = request.fullpath 
@@ -115,7 +115,7 @@ get '/test-weekly-mood-report' do
   puts "/user-weekly-mood-report"
   if @user = User.where(:email => "cathy@softwareoptions.com").first
       @results = Mood.where(:user_id => @user.id, :created_at => 1.week.ago..Time.now).order("created_at DESC")
-      @chart_results = @results.unscoped.group(:energy_level).count
+      @chart_results = @results.group(:energy_level).count
 
       puts "test weekly mood report with graph"
       erb :test_weekly_mood_report
