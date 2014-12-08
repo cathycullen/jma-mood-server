@@ -48,7 +48,6 @@ configure do
   # Set the views to
   set :views, File.join(Sinatra::Application.root, "app", "views")
 
-  ActiveRecord::Base.default_timezone = 'Central Time (US & Canada)'
 end
 
 
