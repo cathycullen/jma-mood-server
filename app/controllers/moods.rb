@@ -78,10 +78,6 @@ get '/test_send-weekly-mood-report' do
   end
 end
 
-Order.select("date(created_at) as ordered_date, sum(price) as total_price").
-  group("date(created_at)").having("sum(price) > ?", 100)
-
-
 get '/send-monthly-mood-report' do
   puts "/send-monthly-mood-report"
   if @user = user_for_auth_token
