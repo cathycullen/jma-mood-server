@@ -78,12 +78,15 @@ get '/test_send-weekly-mood-report' do
   end
 end
 
+Order.select("date(created_at) as ordered_date, sum(price) as total_price").
+  group("date(created_at)").having("sum(price) > ?", 100)
+
+
 get '/send-monthly-mood-report' do
   puts "/send-monthly-mood-report"
   if @user = user_for_auth_token
       @results = Mood.where(:user_id => @user.id, :created_at => 1.month.ago..Time.now).order("created_at DESC")
-      @chart_results = Mood.where(:user_id => @user.id, :created_at => 1.week.ago..Time.now).group(:energy_level).count
-
+      @chart_results = Mood.where(:user_id => @user.id, :created_at => 1.week.ago..Time.now).group(:energy_level).order(:energy_level).count
       email = Mailer.send_weekly_mood_report(@user, @user.coach, @results, @chart_results)
       email.deliver
       retval = @results.to_json
