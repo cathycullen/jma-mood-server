@@ -1,10 +1,6 @@
 class User < ActiveRecord::Base
   has_secure_password
-  has_many :moods, -> {
-  	order('created_at DESC')},
-  		:dependent =>
-  		:destroy)
-  }
+  has_many :moods
   belongs_to :coach
   has_many :auth_tokens
 
