@@ -83,7 +83,7 @@ get '/send-monthly-mood-report' do
   if @user = user_for_auth_token
       @results = Mood.where(:user_id => @user.id, :created_at => 1.month.ago..Time.now).order("created_at DESC")
       @chart_results = Mood.where(:user_id => @user.id, :created_at => 1.week.ago..Time.now).group(:energy_level).order(:energy_level).count
-      email = Mailer.send_weekly_mood_report(@user, @user.coach, @results, @chart_results)
+      email = Mailer.send_monthly_mood_report(@user, @user.coach, @results, @chart_results)
       email.deliver
       retval = @results.to_json
   else
