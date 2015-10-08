@@ -9,6 +9,7 @@ end
 get '/forgot-password' do
   if @user = User.find_by(email: params[:email])
     puts "Found user: #{@user.inspect}"
+    @user.create_token
 
     email = Mailer.send_password_link(@user)
     email.deliver
